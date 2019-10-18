@@ -1,4 +1,4 @@
-const nullParser = jsonInput => jsonInput.startsWith('null') ? ['null', jsonInput.slice(4).trim()] : null
+const nullParser = jsonInput => jsonInput.startsWith('null') ? [null, jsonInput.slice(4).trim()] : null
 const booleanParser = jsonInput => jsonInput.startsWith('true') ? [true, jsonInput.slice(4).trim()] : (jsonInput.startsWith('false') ? [false, jsonInput.slice(5).trim()] : null)
 const commaParser = jsonInput => jsonInput.startsWith(',') ? [',', jsonInput.slice(1).trim()] : null
 const collonParser = jsonInput => jsonInput.startsWith(':') ? [':', jsonInput.slice(1).trim()] : null
@@ -33,7 +33,7 @@ const arrayParser = jsonInput => {
   jsonInput = jsonInput.slice(1).trim()
   while (jsonInput[0] !== ']' && jsonInput.length > 1) {
     const parsersedResult = valueParser(jsonInput)
-    if (parsersedResult == null) return null
+    if (parsersedResult === null) return null
     result.push(parsersedResult[0])
     jsonInput = parsersedResult[1]
     const commaParsedResult = commaParser(jsonInput)
@@ -41,7 +41,7 @@ const arrayParser = jsonInput => {
     jsonInput = commaParsedResult[1]
   }
   if (jsonInput[0] === ']' && jsonInput.length >= 1) return [result, jsonInput.slice(1).trim()]
-  else return null
+  return null
 }
 
 const objectParser = jsonInput => {
@@ -58,7 +58,7 @@ const objectParser = jsonInput => {
     if ((objectParserResult = collonParser(jsonInput)) == null) return null
     jsonInput = objectParserResult[1]
     const valueParserResult = valueParser(jsonInput)
-    if (valueParserResult == null) return null
+    if (valueParserResult === null) return null
     value = valueParserResult[0]
     result[key] = value
     jsonInput = valueParserResult[1]
@@ -67,7 +67,7 @@ const objectParser = jsonInput => {
     jsonInput = commaParserResult[1]
   }
   if (jsonInput[0] === '}' && jsonInput.length >= 1) return [result, jsonInput.slice(1).trim()]
-  else return null
+  return null
 }
 
 const valueParser = jsonInput => {
@@ -79,7 +79,7 @@ const valueParser = jsonInput => {
   return null
 }
 
-require('fs').readFile('test_cases/passReddit.json', (err, data) => {
+require('fs').readFile('test_cases/test.json', (err, data) => {
   if (err) throw err
   else (result = valueParser(data.toString().trim())) ? console.log(result[0]) : console.log('Invalid JSON')
 })
