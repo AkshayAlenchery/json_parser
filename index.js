@@ -26,7 +26,6 @@ const stringParser = jsonInput => {
   }
   return [result, jsonInput.slice(1).trim()]
 }
-
 const arrayParser = jsonInput => {
   const result = []
   if (!jsonInput.startsWith('[')) return null
@@ -43,7 +42,6 @@ const arrayParser = jsonInput => {
   if (jsonInput[0] === ']' && jsonInput.length >= 1) return [result, jsonInput.slice(1).trim()]
   else return null
 }
-
 const objectParser = jsonInput => {
   const result = {}
   let key = null
@@ -69,7 +67,6 @@ const objectParser = jsonInput => {
   if (jsonInput[0] === '}' && jsonInput.length >= 1) return [result, jsonInput.slice(1).trim()]
   else return null
 }
-
 const valueParser = jsonInput => {
   const parsers = [nullParser, booleanParser, numberParser, stringParser, arrayParser, objectParser]
   for (const parser of parsers) {
@@ -78,7 +75,6 @@ const valueParser = jsonInput => {
   }
   return null
 }
-
 require('fs').readFile('test_cases/passReddit.json', (err, data) => {
   if (err) throw err
   else (result = valueParser(data.toString().trim())) ? console.log(result[0]) : console.log('Invalid JSON')
