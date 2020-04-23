@@ -1,6 +1,7 @@
 # JSON Parser
 
-### First geekskool project
+Library to parse JSON.
+Built using javascript.
 
 ## To run script
 ```
